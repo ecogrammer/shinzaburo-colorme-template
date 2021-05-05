@@ -268,6 +268,7 @@ button {
 .l-contents-side {
   order: -1;
   width: 220px;
+  background: #FAFAFA;
 }
 @media screen and (max-width: 1030px) {
   .l-contents-side {
@@ -765,6 +766,7 @@ svg:not(:root) {
   width: auto !important;
   text-align: center;
 }
+
 .c-favorite-list__price {
   color: #909090;
   margin-top: 15px;
@@ -775,6 +777,10 @@ svg:not(:root) {
   margin-top: 0;
   text-decoration: line-through;
 }
+.is-soldout {
+  color: #FA5050;
+}
+
 .c-favorite-list__btn {
   position: absolute;
   right: 30px;
