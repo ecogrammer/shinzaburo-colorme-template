@@ -9,7 +9,7 @@
         <h1 class="l-header-logo__img<{if $logo_type !== "image"}> class="is-txt"<{/if}>">
           <a<{if $logo_type !== "image"}> class="l-header-logo__type-txt"<{/if}> href="<{$home_url}>"><{$logo}></a>
         </h1>
-        <{if $logo_type == "image"}>
+        <{if $logo_type !== "image"}>
           <p class="l-header-logo__txt">
             <{$shop_name}>
           </p>
@@ -53,6 +53,34 @@
     <div class="l-main-navi">
       <div class="l-main-navi__in">
         <ul class="l-main-navi-list">
+          <li class="l-main-navi-list__item">
+            <div class="l-main-navi-list__ttl">
+              HOME
+            </div>
+            <button class="l-main-navi-list__link js-mega-menu-btn">
+              ホーム
+            </button>
+            <div class="l-mega-menu js-mega-menu-contents">
+              <ul class="l-mega-menu-list">
+                <li class="l-mega-menu-list__item">
+                		<a class="l-mega-menu-list__link" href="https://mataichi.info/blog/">お知らせ</a>
+                </li>
+                <li class="l-mega-menu-list__item">
+                		<a class="l-mega-menu-list__link" href="https://mataichi.info/order/">ご注文方法</a>
+                </li>
+                <li class="l-mega-menu-list__item">
+                		<a class="l-mega-menu-list__link" href="https://mataichi.info/tottan/">店舗情報</a>
+                </li>
+                <li class="l-mega-menu-list__item">
+                		<a class="l-mega-menu-list__link" href="https://mataichi.info/contact/">お問い合わせ</a>
+                </li>
+                <li class="l-mega-menu-list__item">
+                   <a class="l-mega-menu-list__link" href="https://mataichi.info/company/">会社概要</a>
+                </li>
+              </ul>
+            </div>
+          </li>
+
           <{section name=num loop=$category}>
           <{if $smarty.section.num.first }>
           <li class="l-main-navi-list__item">
@@ -60,7 +88,7 @@
               CATEGORY
             </div>
             <button class="l-main-navi-list__link js-mega-menu-btn">
-              CATEGORY
+              商品カテゴリ
             </button>
             <div class="l-mega-menu js-mega-menu-contents">
               <ul class="l-mega-menu-list">
@@ -76,6 +104,7 @@
           </li>
           <{/if}>
           <{/section}>
+
           <{section name=num loop=$group}>
           <{if $smarty.section.num.first }>
           <li class="l-main-navi-list__item">
@@ -83,7 +112,7 @@
               GROUP
             </div>
             <button class="l-main-navi-list__link js-mega-menu-btn">
-              GROUP
+              ブランド・メーカー
             </button>
             <div class="l-mega-menu js-mega-menu-contents">
               <ul class="l-mega-menu-list">
@@ -99,6 +128,7 @@
           </li>
           <{/if}>
           <{/section}>
+
           <{if $free_area_flg}>
           <li class="l-main-navi-list__item">
             <div class="l-main-navi-list__ttl">
@@ -121,11 +151,14 @@
           </li>
           <{/if}>
         </ul>
+
+				
         <div class="l-help-navi-box">
           <ul class="l-help-navi-list">
             <li class="l-help-navi-list__item">
               <a class="l-help-navi-list__link" href="<{$view_myaccount_url}>">マイアカウント</a>
             </li>
+
             <{if $members_use_flg == true}>
               <{if $members_login_flg == false}>
                 <{if $members_register_flg == true}>
@@ -579,11 +612,6 @@
     </div><!-- /.l-footer-main -->
   </div><!-- /.u-container -->
 </div><!-- /.l-footer -->
-<div class="l-copyright">
-  <div class="l-copyright__txt">
-    <{$e_copyright}>
-  </div>
-</div>
 
 <script src="https://img.shop-pro.jp/tmpl_js/86/jquery.biggerlink.min.js"></script>
 <script src="https://img.shop-pro.jp/tmpl_js/86/jquery.matchHeight-min.js"></script>
