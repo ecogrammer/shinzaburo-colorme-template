@@ -424,7 +424,7 @@
     <!-- 埋め込みJSでは、兄弟要素を書いたときにエラー時の処理で兄弟が消えるケースがあるので、div でくくります。 Diffが見やすいようにインデントしていません-->
     <!-- cms-content-typeには実際のコンテンツタイプのIDを指定します-->
     <div>
-    <div class="p-product-body" cms-item cms-content-type="color-me-items" style="visibility: hidden;">
+    <div class="p-product-body" cms-item cms-content-type="sample-ab-testing" style="visibility: hidden;">
       <div class="p-product-body-inner">
         <{if $product.model != ""}>
         <div class="p-product-body__model">
@@ -434,7 +434,7 @@
 
         <div class="p-product-body__name">
           <!-- Spearlyの埋め込みコードに置き換え -->
-          {%= color-me-items_title %}
+          {%= sample-ab-testing_title %}
         </div>
 
         <{* ソーシャル共有ボタン *}>
@@ -499,7 +499,7 @@
         <{if $product.explain != ""}>
         <div class="p-product-body__description">
           <!-- Spearlyの埋め込みコードに置き換え -->
-          {%= color-me-items_content %}
+          {%= sample-ab-testing_description %}
         </div>
         <{/if}>
         <{* // 商品説明文 *}>
