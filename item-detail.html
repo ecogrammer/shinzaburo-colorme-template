@@ -421,8 +421,134 @@
       </div>
     </div>
 
+    <!-- 埋め込みJSでは、兄弟要素を書いたときにエラー時の処理で兄弟が消えるケースがあるので、div でくくります。 Diffが見やすいようにインデントしていません-->
+    <!-- cms-content-typeには実際のコンテンツタイプのIDを指定します-->
+    <div>
+    <div class="p-product-body" cms-item cms-content-type="color-me-items" style="visibility: hidden;">
+      <div class="p-product-body-inner">
+        <{if $product.model != ""}>
+        <div class="p-product-body__model">
+          <{$product.model}>
+        </div>
+        <{/if}>
 
-    <div class="p-product-body">
+        <div class="p-product-body__name">
+          <!-- Spearlyの埋め込みコードに置き換え -->
+          {%= color-me-items_title %}
+        </div>
+
+        <{* ソーシャル共有ボタン *}>
+        <ul class="p-product-body__share-buttons">
+          <li>
+            <{line_button}>
+          </li>
+          <li>
+            <{twitter_tweet}>
+          </li>
+          <li>
+            <{facebook_like layout="button_count" width=100}>
+          </li>
+        </ul>
+        <{* // ソーシャル共有ボタン *}>
+
+        <{if $review_use_flg}>
+        <div class="p-product-body__review-link">
+          <a href="#review">
+            <span><{$review_item_num}></span>
+            件のレビュー
+          </a>
+        </div>
+        <{/if}>
+
+        <{* 販売価格（ログイン時は会員価格） *}>
+        <{if $members_login_flg && $product.discount_flg}>
+        <div class="p-product-body__price p-product-body__price--discount">
+          <{if $option_price.max != $option_price.min}>
+          <{$option_price.min}> &#12316; <{$option_price.max}>
+          <{else}>
+          <{$product.sales}>
+          <{/if}>
+
+          <{$product.discount_rate}>OFF
+        </div>
+        <div class="p-product-body__regular-price">
+          <{$product.regular_price}>
+        </div>
+        <{else}>
+        <div class="p-product-body__price">
+          <{if $option_price.max != $option_price.min}>
+          <{$option_price.min}> &#12316; <{$option_price.max}>
+          <{else}>
+          <{$product.sales}>
+          <{/if}>
+
+        </div>
+        <{/if}>
+        <{* // 販売価格（ログイン時は会員価格） *}>
+
+        <{* 付与ポイント *}>
+        <{if $product.shoppoint > 0}>
+        <div class="p-product-body__point">
+          <span><{$product.shoppoint}></span>
+          ポイント還元
+        </div>
+        <{/if}>
+        <{* // 付与ポイント *}>
+
+        <{* 商品説明文 *}>
+        <{if $product.explain != ""}>
+        <div class="p-product-body__description">
+          <!-- Spearlyの埋め込みコードに置き換え -->
+          {%= color-me-items_content %}
+        </div>
+        <{/if}>
+        <{* // 商品説明文 *}>
+
+        <{* 商品画像 *}>
+        <{if $product.img_url != "" || $otherimg_num > 0}>
+        <div id="product-images" class="p-product-body__images">
+          <ul class="p-product-images">
+            <{if $product.img_url != ""}>
+            <li class="p-product-images__unit">
+              <a href="<{$product.img_url}>" class="p-product-images__image-wrap c-image-wrap c-image-wrap--link js-open-modal" rel="product-gallery">
+                <div class="c-image-box">
+                  <img src="<{$product.img_url}>" class="c-image-box__image js-lazyload" />
+                </div>
+              </a>
+            </li>
+            <{/if}>
+            <{section name=num loop=$otherimg}>
+            <{if $otherimg[num].url != ""}>
+            <li class="p-product-images__unit">
+              <a href="<{$otherimg[num].url}>" class="p-product-images__image-wrap c-image-wrap c-image-wrap--link js-open-modal" rel="product-gallery">
+                <div class="c-image-box">
+                  <img src="<{$otherimg[num].url}>" class="c-image-box__image js-lazyload" />
+                </div>
+              </a>
+            </li>
+            <{/if}>
+            <{/section}>
+          </ul>
+        </div>
+        <{/if}>
+        <{* // 商品画像 *}>
+
+        <{if $product.soldout_flg == 0 && !$shop_stop_flg && !$product.login_sale_flg}>
+        <a href="#cart-form" class="p-product-body__linkto-cart c-button c-button--solid">
+          この商品を購入する
+        </a>
+        <{/if}>
+      </div>
+    </div>
+
+    </div>
+    <!-- フォールバック用(Spearly CMS に該当のデータが存在しない時） cms-itemを設定した要素を複製する形 -->
+    <style>
+      .backup-<{$product.id}> {
+        display: none;
+      }
+    </style>
+    <div class="p-product-body backup-<{ $product.id }>">
       <div class="p-product-body-inner">
         <{if $product.model != ""}>
         <div class="p-product-body__model">
@@ -536,6 +662,7 @@
         <{/if}>
       </div>
     </div>
+    <!-- フォールバック用 終わり -->
 
   </div>
 

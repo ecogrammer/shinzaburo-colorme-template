@@ -118,70 +118,161 @@
   </div>
 
   
+  
+  <!-- コンテンツ読み込みに成功したときは、display:none を外す処理 -->
+  <script>
+    window.addEventListener('spearlyCmsAfterInit', (evt) => {
+      // 取得成功したものについては、display: none を外す
+      const contentId = evt.cmsContentId;
+      const className = `.c-item-list__item-from-spearly-${contentId}`;
+      const targetElement = document.querySelector(className);
+      targetElement.classList.remove(className);
+    })
+  </script>
 
-
+  <!-- 商品リスト -->
   <ul class="c-product-list">
     <{section name=num loop=$productlist}>
+      <!-- Spearly / カラーミー両方とも最初は隠しておきます -->
+      <style>
+        /* コンテンツが読み込めなかった時に表示する要素に当てるクラス */
+        /* backup-* のようにワイルドカードでも問題ありません */
+        .backup-<{$productlist[num].id}> {
+          display: none;
+        }
+        /* コンテンツ読み込みまで表示崩れを防ぐために非表示にするクラス */
+        /* 上のscriptの処理で削除されるクラスです */
+        .c-item-list__item-from-spearly-<{$productlist[num].id}> {
+          display: none;
+        }
+      </style>
+      <!-- 商品個別 (Spearly から) -->
 
-    <li class="c-product-list__item">
-      
-      <{* 商品画像 *}>
-      <a href="<{$productlist[num].link_url}>" class="c-product-list__image-wrap c-image-wrap c-image-wrap--link">
-        <{* 商品画像1枚目 *}>
-        <div class="c-image-box<{if $productlist[num].otherimg[0].url != ""}> c-image-box--main<{/if}>">
-          <{if $productlist[num].img_url != ""}>
-          <img src="<{$productlist[num].img_url}>" alt="<{$productlist[num].name}>" class="c-image-box__image js-lazyload" />
-          <{else}>
-          <span class="c-image-box__image c-image-box__image--noimage">No Image</span>
+      <li 
+        class="c-product-list__item c-item-list__item-from-spearly-<{$productlist[num].id }>"
+        cms-item
+        cms-content-type="color-me-items"
+        cms-content="<{ $productlist[num].id }>"
+      >
+        <{* 商品画像 *}>
+        <a href="<{$productlist[num].link_url}>" class="c-product-list__image-wrap c-image-wrap c-image-wrap--link">
+          <{* 商品画像1枚目 *}>
+          <div class="c-image-box<{if $productlist[num].otherimg[0].url != ""}> c-image-box--main<{/if}>">
+            <{if $productlist[num].img_url != ""}>
+            <img src="<{$productlist[num].img_url}>" alt="<{$productlist[num].name}>" class="c-image-box__image js-lazyload" />
+            <{else}>
+            <span class="c-image-box__image c-image-box__image--noimage">No Image</span>
+            <{/if}>
+          </div>
+          <{* 商品画像2枚目（2枚目が存在する場合のみ） *}>
+          <{foreach from=$productlist[num].otherimg item=otherimg name=otherimg}>
+          <{if $otherimg.url != "" && $smarty.foreach.otherimg.first}>
+          <div class="c-image-box c-image-box--otherimg">
+            <img src="<{$otherimg.url}>" class="c-image-box__image" />
+          </div>
           <{/if}>
+          <{/foreach}>
+          
+        </a>
+        <{* 商品名 *}>
+        <a href="<{$productlist[num].link_url}>" class="c-product-list__name">
+          {%= color-me-items_title %}
+        </a>
+        <{if !$productlist[num].soldout_flg}>
+        <div class="c-product-info__price c-product-list__price<{if $members_login_flg && $productlist[num].discount_flg}> c-product-info__price--discount<{/if}>">
+          <{* 販売価格（ログイン時は会員価格） *}>
+          <{$productlist[num].price}>
+          <{* 割引率（ログイン時、通常販売価格と会員価格が異なる場合のみ） *}>
+          <{if $members_login_flg && $productlist[num].discount_flg}><{$productlist[num].discount_rate}>OFF<{/if}>
         </div>
-        <{* 商品画像2枚目（2枚目が存在する場合のみ） *}>
-        <{foreach from=$productlist[num].otherimg item=otherimg name=otherimg}>
-        <{if $otherimg.url != "" && $smarty.foreach.otherimg.first}>
-        <div class="c-image-box c-image-box--otherimg">
-          <img src="<{$otherimg.url}>" class="c-image-box__image" />
+        <{* 通常販売価格（ログイン時、通常販売価格と会員価格が異なる場合のみ） *}>
+        <{if $members_login_flg && $productlist[num].discount_flg}>
+        <div class="c-product-info__regular-price c-product-list__regular-price">
+          <{$productlist[num].regular_price}>
         </div>
         <{/if}>
-        <{/foreach}>
+        <{else}>
+        <{* 売り切れの表記 *}>
+        <div class="c-product-info__soldout c-product-list__soldout">
+          SOLD OUT
+        </div>
+        <{/if}>
+        <{* 簡易説明文 *}>
+        <{if $productlist[num].s_expl != ""}>
+        <div class="c-product-list__expl">
+          <{$productlist[num].s_expl}>
+          <script type='text/javascript' src='https://shinzaburo-shoten.shop/?mode=cartjs&pid=<{$productlist[num].id}>&style=normal_gray&name=n&img=n&expl=n&stock=n&price=n&inq=n&sk=n' charset='euc-jp'></script>
+        </div>
+        <{/if}>
+        <{* お気に入り追加ボタン *}>
+        <div class="c-product-list__fav-item">
+          <button type="button" <{favorite_button_attribute added_class="is-added" product_id=$productlist[num].id}>>
+            <svg role="img" aria-hidden="true"><use xlink:href="#heart"></use></svg>
+          </button>
+        </div>
+      </li>
+
+      <!-- コンテンツが取得できなかった場合に表示される要素-->
+      <li class="c-product-list__item backup-<{$productlist[num].id}>">
         
-      </a>
-      <{* 商品名 *}>
-      <a href="<{$productlist[num].link_url}>" class="c-product-list__name">
-        <{$productlist[num].name}>
-      </a>
-      <{if !$productlist[num].soldout_flg}>
-      <div class="c-product-info__price c-product-list__price<{if $members_login_flg && $productlist[num].discount_flg}> c-product-info__price--discount<{/if}>">
-        <{* 販売価格（ログイン時は会員価格） *}>
-        <{$productlist[num].price}>
-        <{* 割引率（ログイン時、通常販売価格と会員価格が異なる場合のみ） *}>
-        <{if $members_login_flg && $productlist[num].discount_flg}><{$productlist[num].discount_rate}>OFF<{/if}>
-      </div>
-      <{* 通常販売価格（ログイン時、通常販売価格と会員価格が異なる場合のみ） *}>
-      <{if $members_login_flg && $productlist[num].discount_flg}>
-      <div class="c-product-info__regular-price c-product-list__regular-price">
-        <{$productlist[num].regular_price}>
-      </div>
-      <{/if}>
-      <{else}>
-      <{* 売り切れの表記 *}>
-      <div class="c-product-info__soldout c-product-list__soldout">
-        SOLD OUT
-      </div>
-      <{/if}>
-      <{* 簡易説明文 *}>
-      <{if $productlist[num].s_expl != ""}>
-      <div class="c-product-list__expl">
-        <{$productlist[num].s_expl}>
-        <script type='text/javascript' src='https://shinzaburo-shoten.shop/?mode=cartjs&pid=<{$productlist[num].id}>&style=normal_gray&name=n&img=n&expl=n&stock=n&price=n&inq=n&sk=n' charset='euc-jp'></script>
-      </div>
-      <{/if}>
-      <{* お気に入り追加ボタン *}>
-      <div class="c-product-list__fav-item">
-        <button type="button" <{favorite_button_attribute added_class="is-added" product_id=$productlist[num].id}>>
-          <svg role="img" aria-hidden="true"><use xlink:href="#heart"></use></svg>
-        </button>
-      </div>
-    </li>
+        <{* 商品画像 *}>
+        <a href="<{$productlist[num].link_url}>" class="c-product-list__image-wrap c-image-wrap c-image-wrap--link">
+          <{* 商品画像1枚目 *}>
+          <div class="c-image-box<{if $productlist[num].otherimg[0].url != ""}> c-image-box--main<{/if}>">
+            <{if $productlist[num].img_url != ""}>
+            <img src="<{$productlist[num].img_url}>" alt="<{$productlist[num].name}>" class="c-image-box__image js-lazyload" />
+            <{else}>
+            <span class="c-image-box__image c-image-box__image--noimage">No Image</span>
+            <{/if}>
+          </div>
+          <{* 商品画像2枚目（2枚目が存在する場合のみ） *}>
+          <{foreach from=$productlist[num].otherimg item=otherimg name=otherimg}>
+          <{if $otherimg.url != "" && $smarty.foreach.otherimg.first}>
+          <div class="c-image-box c-image-box--otherimg">
+            <img src="<{$otherimg.url}>" class="c-image-box__image" />
+          </div>
+          <{/if}>
+          <{/foreach}>
+          
+        </a>
+        <{* 商品名 *}>
+        <a href="<{$productlist[num].link_url}>" class="c-product-list__name">
+          <{$productlist[num].name}>
+        </a>
+        <{if !$productlist[num].soldout_flg}>
+        <div class="c-product-info__price c-product-list__price<{if $members_login_flg && $productlist[num].discount_flg}> c-product-info__price--discount<{/if}>">
+          <{* 販売価格（ログイン時は会員価格） *}>
+          <{$productlist[num].price}>
+          <{* 割引率（ログイン時、通常販売価格と会員価格が異なる場合のみ） *}>
+          <{if $members_login_flg && $productlist[num].discount_flg}><{$productlist[num].discount_rate}>OFF<{/if}>
+        </div>
+        <{* 通常販売価格（ログイン時、通常販売価格と会員価格が異なる場合のみ） *}>
+        <{if $members_login_flg && $productlist[num].discount_flg}>
+        <div class="c-product-info__regular-price c-product-list__regular-price">
+          <{$productlist[num].regular_price}>
+        </div>
+        <{/if}>
+        <{else}>
+        <{* 売り切れの表記 *}>
+        <div class="c-product-info__soldout c-product-list__soldout">
+          SOLD OUT
+        </div>
+        <{/if}>
+        <{* 簡易説明文 *}>
+        <{if $productlist[num].s_expl != ""}>
+        <div class="c-product-list__expl">
+          <{$productlist[num].s_expl}>
+          <script type='text/javascript' src='https://shinzaburo-shoten.shop/?mode=cartjs&pid=<{$productlist[num].id}>&style=normal_gray&name=n&img=n&expl=n&stock=n&price=n&inq=n&sk=n' charset='euc-jp'></script>
+        </div>
+        <{/if}>
+        <{* お気に入り追加ボタン *}>
+        <div class="c-product-list__fav-item">
+          <button type="button" <{favorite_button_attribute added_class="is-added" product_id=$productlist[num].id}>>
+            <svg role="img" aria-hidden="true"><use xlink:href="#heart"></use></svg>
+          </button>
+        </div>
+      </li>
+
     <{/section}>
   </ul>
 
