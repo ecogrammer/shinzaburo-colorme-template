@@ -1,18 +1,18 @@
 <{* カスタムバナー 設定 *}>
 <{* カスタムバナー1 *}>
-<{* バナー画像URL *}><{assign var="custom_banner1_image" value="https://img07.shop-pro.jp/PA01446/281/etc_base64/c2hvcF9iYW5uZXJfaW1nXzAwMDQ.jpg?cmsp_timestamp=20230511094811"}>
-<{* タイトル *}><{assign var="custom_banner1_heading" value="私たちのこれから"}>
-<{* リード文 *}><{assign var="custom_banner1_body" value="～持続可能な塩づくり～<br>脱プラスチックを推進しごみのない海を目指します"}>
+<{* バナー画像URL *}><{assign var="custom_banner1_image" value="https://img07.shop-pro.jp/PA01446/281/etc_base64/bmV0X29ubHlfZnJlZV9zaGlwcGluZw.png?cmsp_timestamp=20231107120445"}>
+<{* タイトル *}><{assign var="custom_banner1_heading" value="ネット限定送料無料キャンペーン"}>
+<{* リード文 *}><{assign var="custom_banner1_body" value="オンラインショップにて10,000円以上お買い物で<br>送料無料が適用されます。<br>※1回のご注文で商品合計金額が10,000円を超える場合"}>
 
 <{* カスタムバナー2 *}>
-<{* バナー画像URL *}><{assign var="custom_banner2_image" value="https://img07.shop-pro.jp/PA01446/281/etc/shop_banner_img_0002.jpg?cmsp_timestamp=20210804093559"}>
-<{* タイトル *}><{assign var="custom_banner2_heading" value="ネット限定送料無料キャンペーン"}>
-<{* リード文 *}><{assign var="custom_banner2_body" value="オンラインショップにて10,000円以上お買い物で<br>送料無料が適用されます。<br>※1回のご注文で商品合計金額が1万円を超える場合"}>
+<{* バナー画像URL *}><{assign var="custom_banner2_image" value="https://img07.shop-pro.jp/PA01446/281/etc_base64/zL6-zsykwN_E6i0x.jpg?cmsp_timestamp=20230619114637"}>
+<{* タイトル *}><{assign var="custom_banner2_heading" value="多彩な決済方法が使えます"}>
+<{* リード文 *}><{assign var="custom_banner2_body" value="新三郎商店オンラインショップでは、クレジット決済、Amazon Pay、PayPay、銀行振込と、便利な決済方法がご利用いただけます。"}>
 
 <{* カスタムバナー3 *}>
-<{* バナー画像URL *}><{assign var="custom_banner3_image" value="https://img07.shop-pro.jp/PA01446/281/etc_base64/zL6-zsykwN_E6i0x.jpg?cmsp_timestamp=20230619114637"}>
-<{* タイトル *}><{assign var="custom_banner3_heading" value="多彩な決済方法が使えます"}>
-<{* リード文 *}><{assign var="custom_banner3_body" value="新三郎商店オンラインショップでは、クレジット決済、Amazon Pay、PayPay、銀行振込と、便利な決済方法がご利用いただけます。"}>
+<{* バナー画像URL *}><{assign var="custom_banner3_image" value="https://img07.shop-pro.jp/PA01446/281/etc_base64/c2hvcF9iYW5uZXJfaW1nXzAwMDQ.jpg?cmsp_timestamp=20230511094811"}>
+<{* タイトル *}><{assign var="custom_banner3_heading" value="私たちのこれから"}>
+<{* リード文 *}><{assign var="custom_banner3_body" value="～持続可能な塩づくり～<br>脱プラスチックを推進しごみのない海を目指します"}>
 
 <{* ショップロゴ *}>
 <div class="p-top-logo">
@@ -139,17 +139,17 @@
 <{if $custom_banner1_image != "" || $custom_banner1_heading != "" || $custom_banner1_body != ""}>
 <div class="p-custom-banner p-layout-container">
   <div class="p-custom-banner__unit">
-    <a href='https://shinzaburo-shoten.shop/?mode=f5'><img src="<{$custom_banner1_image}>" alt="" class="p-custom-banner__image js-lazyload" /></a>
+    <img src="<{$custom_banner1_image}>" alt="" class="p-custom-banner__image js-lazyload" />
   </div>
   <div class="p-custom-banner__unit p-custom-banner__unit--text">
     <{if $custom_banner1_heading != ""}>
     <div class="p-custom-banner__heading">
-			<a href='https://shinzaburo-shoten.shop/?mode=f5'><{$custom_banner1_heading}></a>
+			<{$custom_banner1_heading}>
     </div>
     <{/if}>
     <{if $custom_banner1_body != ""}>
     <div class="p-custom-banner__body">
-			<a href='https://shinzaburo-shoten.shop/?mode=f5'><{$custom_banner1_body}></a>
+			<{$custom_banner1_body}>
     </div>
     <{/if}>
   </div>
@@ -382,7 +382,7 @@
   <div class="p-custom-banner__unit p-custom-banner__unit--text">
     <{if $custom_banner3_heading != ""}>
     <div class="p-custom-banner__heading">
-      <{$custom_banner3_heading}>
+			<a href='https://shinzaburo-shoten.shop/?mode=f5'><{$custom_banner3_heading}></a>
     </div>
     <{/if}>
     <{if $custom_banner3_body != ""}>
@@ -465,4 +465,3 @@
 </div>
 <{/if}>
 <{* // フリースペース *}>
-
